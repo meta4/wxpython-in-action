@@ -6,9 +6,8 @@ class SketchWindow(wx.Window):
     def __init__(self, parent, ID):
         wx.Window.__init__(self, parent, ID)
         self.SetBackgroundColour("White")
-        self.color = "Black"
         self.thickness = 1
-        self.pen = wx.Pen(self.color, self.thickness, wx.SOLID)
+        self.SetColor("Black")
         self.lines = []
         self.curLine = []
         self.pos = (0,0)
@@ -85,16 +84,10 @@ class SketchWindow(wx.Window):
                 dc.DrawLine(*coords)
 
     def SetColor(self, color):
-        self.color = color,
+        self.color = color
         self.pen = wx.Pen(self.color, self.thickness, wx.SOLID)
 
     def SetThickness(self, num):
-        """
-        
-        Arguments:
-        - `self`:
-        - `num`:
-        """
         self.thickness = num
         self.pen = wx.Pen(self.color, self.thickness, wx.SOLID)
 
