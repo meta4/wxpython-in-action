@@ -1,6 +1,4 @@
-"""This example adds a open and close dialog option to the sketch app.
-
-And associated functionality
+"""This example adds a color picking dialog to the sketch app.
 """
 
 import cPickle
@@ -45,7 +43,9 @@ class SketchFrame(wx.Frame):
                             ("&Black", "", self.OnColor, wx.ITEM_RADIO),
                             ("&Red",   "", self.OnColor, wx.ITEM_RADIO),
                             ("&Green", "", self.OnColor, wx.ITEM_RADIO),
-                            ("&Blue",  "", self.OnColor, wx.ITEM_RADIO))),
+                            ("&Blue",  "", self.OnColor, wx.ITEM_RADIO),
+                            ("&Other...", "", self.OnOtherColor, wx.ITEM_RADIO)
+                            )),
                     ("", "", ""),
                     ("&Quit", "Quit", self.OnCloseWindow)))]
 
@@ -187,6 +187,13 @@ class SketchFrame(wx.Frame):
             color = str(item.GetLabel())
         print "New colour: %s" % color
         self.sketch.SetColor(color)
+
+    def OnOtherColor(self, event):
+        dlg = wx.ColourDialog(self)
+        dlg.GetColourData().SetChooseFull(True)
+        if dlg.ShowModal() == wx.ID_OK:
+            self.sketch.SetColor(dlg.GetColourData().GetColour())
+        dlg.Destroy()
 
     def OnCloseWindow(self, event):
         self.Destroy()
