@@ -1,12 +1,11 @@
-"""This example adds a open and close dialog option to the sketch app.
-
-And associated functionality
+"""This example adds a control panel to the left side of the sketch app.
 """
 
 import cPickle
 import os
 import wx
 from SketchWindow import SketchWindow
+from ControlPanel import ControlPanel
 
 class SketchFrame(wx.Frame):
     def __init__(self, parent):
@@ -19,6 +18,7 @@ class SketchFrame(wx.Frame):
         self.initStatusBar()
         self.createMenuBar()
         self.createToolBar()
+        self.createPanel()
 
     def initStatusBar(self):
         self.statusbar = self.CreateStatusBar()
@@ -45,7 +45,9 @@ class SketchFrame(wx.Frame):
                             ("&Black", "", self.OnColor, wx.ITEM_RADIO),
                             ("&Red",   "", self.OnColor, wx.ITEM_RADIO),
                             ("&Green", "", self.OnColor, wx.ITEM_RADIO),
-                            ("&Blue",  "", self.OnColor, wx.ITEM_RADIO))),
+                            ("&Blue",  "", self.OnColor, wx.ITEM_RADIO),
+                            ("&Other...", "", self.OnOtherColor, wx.ITEM_RADIO)
+                            )),
                     ("", "", ""),
                     ("&Quit", "Quit", self.OnCloseWindow)))]
 
@@ -118,6 +120,13 @@ class SketchFrame(wx.Frame):
         dc.SelectObject(wx.NullBitmap)
         return bmp
 
+    def createPanel(self):
+        controlPanel = ControlPanel(self, -1, self.sketch)
+        box = wx.BoxSizer(wx.HORIZONTAL)
+        box.Add(controlPanel, 0, wx.EXPAND)
+        box.Add(self.sketch, 1, wx.EXPAND)
+        self.SetSizer(box)
+
     def SaveFile(self):
         if self.filename:
             data = self.sketch.GetLinesData()
@@ -187,6 +196,13 @@ class SketchFrame(wx.Frame):
             color = str(item.GetLabel())
         print "New colour: %s" % color
         self.sketch.SetColor(color)
+
+    def OnOtherColor(self, event):
+        dlg = wx.ColourDialog(self)
+        dlg.GetColourData().SetChooseFull(True)
+        if dlg.ShowModal() == wx.ID_OK:
+            self.sketch.SetColor(dlg.GetColourData().GetColour())
+        dlg.Destroy()
 
     def OnCloseWindow(self, event):
         self.Destroy()
