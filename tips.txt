@@ -1,0 +1,4 @@
+# For use in listing09_12.py
+1. You can do startup tips easily.
+2. Use the force, Luke.
+3. You can do fairly long tips.  This is an attempt at a very long tip.  I'm not sure if it succeds, but that has never stopped me in the past.  I'm stubborn that way.
