@@ -1,10 +1,5 @@
 import wx
 
-class PanelFrame(wx.Frame):
-    pass # Flesh out.
-    # Create a panel in self.panel
-    # call wx.Frame.__init__() - set title
-
 class TestFrame(wx.Frame): # inherit from PanelFrame
     def __init__(self):
         wx.Frame.__init__(self, None, -1, '"Real World" sizer example')
