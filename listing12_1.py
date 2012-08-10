@@ -27,6 +27,30 @@ def makeGradient(nrows=100, ncols=100):
     img.SetData(a.tostring())
     return img
 
+def dist(x1, y1, x2, y2):
+    from math import sqrt
+    x = x2 - x1
+    y = y2 - y1
+    return sqrt(x*x + y*y)
+
+def alphaWasher(img, n):
+    "Image must be n x n square"
+    img.InitAlpha()
+    coords = [(x,y) for x in range(n) for y in range(n)
+              if dist(x,y, n/2, n/2) < n/4 or n/2 < dist(x,y, n/2, n/2)]
+    for x, y in coords:
+        img.SetAlpha(x,y,0)
+    coords = [(x,y) for x in range(n) for y in range(n)
+              if n/4 < dist(x,y, n/2, n/2) < n/3.9]
+    print "l = %d" % len(coords)
+    for x, y in coords: img.SetAlpha(x,y,0xAA)
+    coords = [(x,y) for x in range(n) for y in range(n)
+              if n/2 < dist(x,y, n/2, n/2) < n/1.99]
+    print "l = %d" % len(coords)
+    for x, y in coords: img.SetAlpha(x,y,0xAA)
+
+    return img
+
 def scaleImg(img, n):
     new_width  = img.GetWidth()  * n
     new_height = img.GetHeight() * n
@@ -39,13 +63,14 @@ class TestFrame(PanelFrame):
         for name in filenames:
             img = wx.Image(name, wx.BITMAP_TYPE_ANY)
             self.addImageAndScaledImage(img)
-        img = makeGradient(nrows=100, ncols=200)
+        img = makeGradient(nrows=150, ncols=150)
+        img = alphaWasher(img, 150)
         self.addImageAndScaledImage(img)
         self.panel.SetSizerAndFit(self.fgs)
         self.Fit()
 
     def addImageAndScaledImage(self, img_full):
-        for img in [img_full, scaleImg(img_full, 3)]:
+        for img in [img_full, scaleImg(img_full, 1.5)]:
             sBmp = wx.StaticBitmap(self.panel, -1, wx.BitmapFromImage(img))
             self.fgs.Add(sBmp)
 
