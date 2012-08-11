@@ -58,7 +58,7 @@ class RadarGraph(wx.Window):
         dc.DrawText(self.title, (dw-tw)/2, spacer) # draw title
 
         # compute plot center point
-        th = th + 2 * spacer
+        th = th + spacer
         cx = dw / 2
         cy = (dh - th) / 2 + th
         
@@ -107,17 +107,17 @@ class TestFrame(wx.Frame):
                           title="Double Buffered Drawing",
                           size=(480, 480))
         self.plot = RadarGraph(self, "Sample 'Radar' Plot",
-                               'A B C D E F G H'.split())
+                               'A B C D E F G H I J K L M N O P Q R S T'.split())
 
         # create start data
-        data = [random.randint(0,75) for i in self.plot.GetData()]
+        data = [random.randint(0,25) for i in self.plot.GetData()]
 #        data = [50 for i in self.plot.GetData()]
         self.plot.SetData(data)
 
         # Create a timer to update the data values
         self.Bind(wx.EVT_TIMER, self.OnTimeout)
         self.timer = wx.Timer(self)
-        self.timer.Start(50)
+        self.timer.Start(10)
 
     def OnTimeout(self, evt):
         # simulate positive & negative growth in each category

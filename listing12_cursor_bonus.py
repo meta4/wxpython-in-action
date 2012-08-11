@@ -45,7 +45,7 @@ class CursorTestFrame(wx.Frame):
         sizer.Add(wx.StaticLine(self), 0, wx.EXPAND|wx.TOP|wx.BOTTOM, 5)
 
         for label, cursorType in self.buttonConfigs:
-            b = wx.Button(self, label=label, size=(300,30))
+            b = wx.Button(self, label=label, size=(300,25))
             b.SetCursor(wx.StockCursor(cursorType))
             sizer.Add(b, wx.EXPAND, wx.EXPAND)
         self.SetSizer(sizer)
